@@ -1,0 +1,28 @@
+{
+  "name": "@bebrasmell/mono-logger",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "https://github.com/bebrasmell/mono-logger.git",
+  "author": "Zak <137602160+bebrasmell@users.noreply.github.com>",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "test:run": "node test.js",
+    "build": "tsup",
+    "lint": "biome check",
+    "lint:fix": "biome check --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@swc/core": "^1.7.2",
+    "@swc/jest": "^0.2.36",
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0"
+  }
+}
