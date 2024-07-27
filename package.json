@@ -7,6 +7,8 @@
   "license": "MIT",
   "private": false,
   "type": "module",
+  "keywords": ["logs", "logger", "console", "topic"],
+  "description": "A simple topic-based logger with side effects",
   "scripts": {
     "test": "jest",
     "test:run": "node test.js",
