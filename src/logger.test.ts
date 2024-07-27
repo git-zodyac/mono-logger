@@ -5,18 +5,11 @@ function genHash() {
   return ts.toString(16).substring(8);
 }
 
+jest.mock("./colors");
+
 beforeEach(() => {
   jest.clearAllMocks();
 });
-
-jest.mock("chalk", () => ({
-  magenta: jest.fn((s) => s),
-  gray: jest.fn((s) => s),
-  cyan: jest.fn((s) => s),
-  red: jest.fn((s) => s),
-  yellow: jest.fn((s) => s),
-  green: jest.fn((s) => s),
-}));
 
 test("Should have default logger", () => {
   expect(logger).toBeDefined();

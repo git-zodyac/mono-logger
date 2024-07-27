@@ -1,3 +1,4 @@
+import { COLORS } from "./colors";
 import { LOG_LEVELS, type LogLevel, type iLogger, type iLoggerConfig } from "./types";
 
 const DEFAULT_FORMATTER = new Intl.DateTimeFormat("en-US", {
@@ -9,15 +10,6 @@ const DEFAULT_FORMATTER = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
   year: "numeric",
 });
-
-const COLORS: Record<LogLevel, (s: string) => string> = {
-  debug: (s) => `\u001b[90m${s}\u001b[39m`,
-  warn: (s) => `\u001b[33m${s}\u001b[39m`,
-  info: (s) => `\u001b[32m${s}\u001b[39m`,
-  error: (s) => `\u001b[31m${s}\u001b[39m`,
-  verbose: (s) => `\u001b[36m${s}\u001b[39m`,
-  fatal: (s) => `\u001b[35m${s}\u001b[39m`,
-};
 
 const CODES: Record<LogLevel, string> = {
   debug: "DBG",
