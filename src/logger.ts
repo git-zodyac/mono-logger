@@ -1,4 +1,3 @@
-import chalk, { type ForegroundColorName } from "chalk";
 import { LOG_LEVELS, type LogLevel, type iLogger, type iLoggerConfig } from "./types";
 
 const DEFAULT_FORMATTER = new Intl.DateTimeFormat("en-US", {
@@ -11,13 +10,13 @@ const DEFAULT_FORMATTER = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-const COLORS: Record<LogLevel, ForegroundColorName> = {
-  debug: "gray",
-  warn: "yellow",
-  info: "green",
-  error: "red",
-  verbose: "cyan",
-  fatal: "magenta",
+const COLORS: Record<LogLevel, (s: string) => string> = {
+  debug: (s) => `\u001b[90m${s}\u001b[39m`,
+  warn: (s) => `\u001b[33m${s}\u001b[39m`,
+  info: (s) => `\u001b[32m${s}\u001b[39m`,
+  error: (s) => `\u001b[31m${s}\u001b[39m`,
+  verbose: (s) => `\u001b[36m${s}\u001b[39m`,
+  fatal: (s) => `\u001b[35m${s}\u001b[39m`,
 };
 
 const CODES: Record<LogLevel, string> = {
@@ -70,7 +69,7 @@ export class Logger implements iLogger {
   /**
    * A list of topics for current logger instance.
    * The list will include all the parents topics ordered from **root** logger to **leaf**
-  */
+   */
   public get topics(): string[] {
     const prefix = this._parent ? this._parent.topics : [];
     if (this.subject) return [...prefix, this.subject];
@@ -97,9 +96,9 @@ export class Logger implements iLogger {
   }
 
   private display_params(lvl: LogLevel) {
-    const display_ts = chalk.gray(this.timestamp);
-    const level = `[${chalk[COLORS[lvl]](CODES[lvl])}]`;
-    const topics = this.topics.map((t) => chalk.magenta(t)).join(":");
+    const display_ts = COLORS["debug" as const](this.timestamp);
+    const level = `[${COLORS[lvl](CODES[lvl])}]`;
+    const topics = this.topics.map((t) => COLORS["fatal" as const](t)).join(":");
 
     let output = `${display_ts} ${level}`;
     if (this._config?.prefix) output += ` ${this._config?.prefix()}`;
