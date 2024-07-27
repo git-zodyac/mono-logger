@@ -16,6 +16,7 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
+    environment: Packages
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
