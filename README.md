@@ -8,6 +8,9 @@ Default logs format:
 7/26/2024, 20:54:26 [DBG] hello, world
 ```
 
+## Changelog
+Please see [CHANGELOG](./CHANGELOG.md) for latest changes.
+
 ## Installation
 ```bash
 yarn add @bebrasmell/mono-logger
