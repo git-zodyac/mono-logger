@@ -1,13 +1,18 @@
 {
   "name": "@bebrasmell/mono-logger",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "main": "dist/index.js",
   "repository": "https://github.com/bebrasmell/mono-logger.git",
   "author": "Zak <137602160+bebrasmell@users.noreply.github.com>",
   "license": "MIT",
   "private": false,
   "type": "module",
-  "keywords": ["logs", "logger", "console", "topic"],
+  "keywords": [
+    "logs",
+    "logger",
+    "console",
+    "topic"
+  ],
   "description": "A simple topic-based logger with side effects",
   "scripts": {
     "test": "jest",
