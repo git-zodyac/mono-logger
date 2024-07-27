@@ -5,7 +5,7 @@ const formatter = new Intl.DateTimeFormat({
 });
 
 const re_log = new Logger(
-  undefined, "root", {
+  "root", {
   prefix: () => "That's me",
   // transform: (s) => `yo ${s}`,
   date_format: formatter.format,
@@ -27,7 +27,7 @@ deepSubLogger.fatal('hello, fatal');
 deepSubLogger.log('hello, log');
 deepSubLogger.verbose('hello, verbose');
 
-const ex_logger = new Logger(undefined, 'example', {
+const ex_logger = new Logger('example', {
   level: 'info',
   prefix: () => 'my-app',
   date_format: (date) => date.toISOString(),

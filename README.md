@@ -55,7 +55,7 @@ Configuration can be set for the root logger or specific topic and its descendan
 
 Example:
 ```typescript
-const root_logger = new Logger(undefined, "root", {
+const root_logger = new Logger("root", {
     level: "info",
 });
 
@@ -78,7 +78,7 @@ You can configure the logger with:
 ```typescript
 import { Logger } from '@bebrasmell/mono-logger';
 
-const ex_logger = new Logger(undefined, 'example', {
+const ex_logger = new Logger('example', {
   level: 'debug',
   prefix: () => 'my-app',
   date_format: (date) => date.toISOString(),

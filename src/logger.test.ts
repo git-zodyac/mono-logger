@@ -201,7 +201,7 @@ test("Should run side effect if forced", () => {
 
 test("Should be instanced with new keyword", () => {
   const hash = genHash();
-  const logger = new Logger(undefined, hash);
+  const logger = new Logger(hash);
 
   expect(logger.topics[0]).toBe(hash);
 });
@@ -211,7 +211,7 @@ test("Should be able to use custom date formatter", () => {
 
   const hash = genHash();
   const date_format = jest.fn(() => hash);
-  const logger = new Logger(undefined, undefined, {
+  const logger = new Logger(undefined, {
     date_format,
   });
 
@@ -226,7 +226,7 @@ test("Should be able to use custom date formatter", () => {
 test("Should include prefix", () => {
   const hash = genHash();
   const prefix = jest.fn(() => hash);
-  const logger = new Logger(undefined, undefined, {
+  const logger = new Logger(undefined, {
     prefix,
   });
 
