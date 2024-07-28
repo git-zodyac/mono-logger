@@ -1,6 +1,6 @@
 {
   "name": "@bebrasmell/mono-logger",
-  "version": "1.4.5",
+  "version": "1.4.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "typings": "dist/index.d.ts",
