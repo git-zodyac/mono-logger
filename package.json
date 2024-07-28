@@ -1,9 +1,10 @@
 {
   "name": "@bebrasmell/mono-logger",
   "version": "1.4.5",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "module": "./dist/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
+  "module": "dist/index.js",
   "repository": "https://github.com/bebrasmell/mono-logger.git",
   "author": "Zak <137602160+bebrasmell@users.noreply.github.com>",
   "license": "MIT",
