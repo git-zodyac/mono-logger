@@ -12,7 +12,7 @@ const DEFAULT_FORMATTER = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
 });
 
-const CODES: Record<LogLevel, string> = {
+export const CODES: Record<LogLevel, string> = {
   debug: "DBG",
   warn: "WRN",
   info: "INF",
