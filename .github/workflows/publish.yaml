@@ -36,7 +36,11 @@ jobs:
           git config --global user.email "137602160+bebrasmell@users.noreply.github.com>"
           git config --global user.name "Zak (GitHub Actions)"
 
-      # Bump package version
+      # Tests
+      - name: Build
+        run: yarn build
+
+        # Bump package version
       # Use tag latest
       - name: Bump release version
         if: startsWith(github.event.inputs.release-type, 'pre') != true
