@@ -46,7 +46,7 @@ export interface iLoggerConfig {
    * Prefix to append before topics
    * @example 2024-07-26 21:05:28 MY_APP_VERSION root:sub-topic
    */
-  prefix?: () => string;
+  readonly prefix?: () => string;
 
   /**
    * Side-effect to run when message appears
@@ -55,7 +55,7 @@ export interface iLoggerConfig {
    * @param topics {string[]} Array of topics, sorted from root to leaf
    * @param ...messages {any[]} Spread array of messages
    */
-  effect?: TEffect | iEffect;
+  readonly effect?: TEffect | iEffect;
 
   /**
    * Function to serialize each logged element.
@@ -78,7 +78,7 @@ export interface iLoggerConfig {
    * });
    * ```
    */
-  transform?: (arg: any) => string;
+  readonly transform?: (arg: any) => string;
 
   /**
    * Custom date formatter.
@@ -86,14 +86,14 @@ export interface iLoggerConfig {
    * @returns Formatted date string
    * @example 7/26/2024, 21:05:28
    */
-  date_format?: (date: Date) => string;
+  readonly date_format?: (date: Date) => string;
 
   /**
    * Log level to display
    * @default debug
    * @example debug, verbose, info, warn, error, fatal
    */
-  level?: LogLevel;
+  readonly level?: LogLevel;
 
   /**
    * Force side-effect
@@ -102,7 +102,7 @@ export interface iLoggerConfig {
    *
    * @default false
    */
-  force_effect?: boolean;
+  readonly force_effect?: boolean;
 }
 
 /**

@@ -55,7 +55,7 @@ const METHOD: Record<LogLevel, "log" | "info" | "warn" | "error"> = {
 export class Logger implements iLogger {
   constructor(
     private readonly subject?: string,
-    private readonly _config?: iLoggerConfig,
+    public readonly _config?: iLoggerConfig,
     public readonly _parent?: Logger,
   ) {}
 

@@ -105,6 +105,23 @@ You can assign any side effect you want to any topic and it's descendants (see C
 
 By default, when you log something below the minimum log level specified in Topic Configuration, ```effect``` is not fired. You can force logger to fire it by passing ```force_effect```.
 
+### Inheritance
+By default, every child logger will inherit configuration from it's parent, but if you'd like to customize a specific parameter, you can access parent's configuration as a readonly object:
+
+```ts
+const parent = logger.topic("parent", {
+  /* ... */
+});
+
+const child = root.topic("child", {
+  ...parent.config,
+  effect: () => { /* do something else */ },
+});
+```
+
+> ![note] You should not modify or override existing configuration.
+That is done on purpose to preserve verbosity and functional consistency.
+
 ### MonoEffects and PolyEffects
 ```MonoEffect``` is a wrapper around your effect function with minimum log level check. Imagine this:
 - Some module has a topic that is logged with ```info``` level;
