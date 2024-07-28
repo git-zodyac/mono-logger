@@ -8,7 +8,7 @@ export class MonoEffect implements iEffect {
     if (level) {
       this.apply = (ts, input_level, topics, ...messages) => {
         if (LOG_LEVELS[input_level] >= LOG_LEVELS[level]) {
-          return effect(ts, level, topics, ...messages);
+          return effect(ts, input_level, topics, ...messages);
         }
       };
     } else {
@@ -23,13 +23,13 @@ export class PolyEffect implements iEffect {
   constructor(public readonly level?: LogLevel) {}
 
   private _effects: (TEffect | iEffect)[] = new Array(0);
-  public readonly effect: TEffect = (ts, level, topics, ...messages) => {
-    if (this.level && LOG_LEVELS[level] < LOG_LEVELS[this.level]) return;
+  public readonly effect: TEffect = (ts, input_level, topics, ...messages) => {
+    if (this.level && LOG_LEVELS[input_level] < LOG_LEVELS[this.level]) return;
     for (const effect of this._effects) {
       if (effect instanceof MonoEffect || effect instanceof PolyEffect) {
-        effect.apply(ts, level, topics, ...messages);
+        effect.apply(ts, input_level, topics, ...messages);
       } else if (typeof effect === "function") {
-        effect(ts, level, topics, ...messages);
+        effect(ts, input_level, topics, ...messages);
       }
     }
   };

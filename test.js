@@ -28,11 +28,11 @@ deepSubLogger.log('hello, log');
 deepSubLogger.verbose('hello, verbose');
 
 const effect_0 = new MonoEffect((ts, level, topics, ...messages) => {
-  console.log(`I am first mono effect! Here's what I have to say at ${ts}:`, messages);
+  console.log(`${level}, I am first mono effect! Here's what I have to say at ${ts}:`, messages);
 }, 'verbose');
 
 const effect_1 = new MonoEffect((ts, level, topics, ...messages) => {
-  console.info(`I am second mono effect! My content for ${ts}:`, messages);
+  console.info(`${level}, I am second mono effect! My content for ${ts}:`, messages);
 }, 'info');
 
 const poly_effect = new PolyEffect();
