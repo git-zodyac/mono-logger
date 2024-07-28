@@ -31,6 +31,12 @@ export const LOG_LEVELS = {
  */
 export type LogLevel = keyof typeof LOG_LEVELS;
 
+export type TEffect = (
+  level: LogLevel,
+  topics: string[],
+  ...messages: any[]
+) => void | Promise<void>;
+
 /**
  * Logger configuration
  */
@@ -47,11 +53,7 @@ export interface iLoggerConfig {
    * @param topics {string[]} Array of topics, sorted from root to leaf
    * @param ...messages {any[]} Spread array of messages
    */
-  effect?: (
-    level: LogLevel,
-    topics: string[],
-    ...messages: any[]
-  ) => void | Promise<void>;
+  effect?: TEffect | iEffect;
 
   /**
    * Function to serialize each logged element.
@@ -99,4 +101,19 @@ export interface iLoggerConfig {
    * @default false
    */
   force_effect?: boolean;
+}
+
+/**
+ * Base effect description
+ */
+export interface iEffect {
+  /**
+   * Minimum log level to apply effect
+   */
+  readonly level?: LogLevel;
+
+  /**
+   * Effect runner
+   */
+  readonly apply: TEffect;
 }

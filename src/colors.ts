@@ -8,4 +8,3 @@ export const COLORS: Record<LogLevel, (s: string) => string> = {
   verbose: (s) => `\u001b[36m${s}\u001b[39m`,
   fatal: (s) => `\u001b[35m${s}\u001b[39m`,
 };
-

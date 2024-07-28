@@ -1,4 +1,4 @@
-import { Logger } from "./dist/index.js";
+import { Logger, MonoEffect, PolyEffect } from "./dist/index.js";
 
 const formatter = new Intl.DateTimeFormat({
   hourCycle: "h11",
@@ -27,11 +27,23 @@ deepSubLogger.fatal('hello, fatal');
 deepSubLogger.log('hello, log');
 deepSubLogger.verbose('hello, verbose');
 
+const effect_0 = new MonoEffect((level, topics, ...messages) => {
+  console.log("I am first mono effect! Here's what I have to say:", messages);
+}, 'verbose');
+
+const effect_1 = new MonoEffect((level, topics, ...messages) => {
+  console.info("I am second mono effect! My content:", messages);
+}, 'info');
+
+const poly_effect = new PolyEffect();
+poly_effect.add(effect_0);
+poly_effect.add(effect_1);
+
 const ex_logger = new Logger('example', {
   level: 'info',
   prefix: () => 'my-app',
   date_format: (date) => date.toISOString(),
-  effect: (level, topics, ...data) => console.log(level, topics, ...data),
+  effect: poly_effect,
   transform: (m) => `yes, ${m}`,
   force_effect: true,
 });

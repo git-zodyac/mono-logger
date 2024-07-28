@@ -1,4 +1,5 @@
 import { COLORS } from "./colors";
+import { MonoEffect, PolyEffect } from "./effect";
 import { LOG_LEVELS, type LogLevel, type iLogger, type iLoggerConfig } from "./types";
 
 const DEFAULT_FORMATTER = new Intl.DateTimeFormat("en-US", {
@@ -87,14 +88,14 @@ export class Logger implements iLogger {
     return DEFAULT_FORMATTER.format(ts);
   }
 
-  private display_params(lvl: LogLevel) {
+  private display_params(lvl: LogLevel, topics: string[]) {
     const display_ts = COLORS["debug" as const](this.timestamp);
     const level = `[${COLORS[lvl](CODES[lvl])}]`;
-    const topics = this.topics.map((t) => COLORS["fatal" as const](t)).join(":");
+    const topics_str = topics.map((t) => COLORS["fatal" as const](t)).join(":");
 
     let output = `${display_ts} ${level}`;
     if (this._config?.prefix) output += ` ${this._config?.prefix()}`;
-    if (topics) output += ` ${topics}`;
+    if (topics_str) output += ` ${topics_str}`;
 
     return output;
   }
@@ -157,17 +158,27 @@ export class Logger implements iLogger {
   public fatal = (...args: any[]) => this._log("fatal", args);
 
   private _log(level: LogLevel, args: any[]) {
-    if (LOG_LEVELS[this._config?.level ?? "debug"] > LOG_LEVELS[level]) {
-      if (this._config?.force_effect) {
-        this._config.effect?.(level, this.topics, ...args);
-      }
+    const topics = this.topics;
 
+    if (LOG_LEVELS[this._config?.level ?? "debug"] > LOG_LEVELS[level]) {
+      if (this._config?.force_effect) this._run_effect(level, topics, ...args);
       return;
     }
 
     const transformed = this._transform(args);
-    console[METHOD[level]](this.display_params(level), ...transformed);
-    this._config?.effect?.(level, this.topics, ...args);
+    console[METHOD[level]](this.display_params(level, topics), ...transformed);
+    this._run_effect(level, topics, ...args);
+  }
+
+  private _run_effect(level: LogLevel, topics: string[], ...messages: any[]) {
+    const effect = this._config?.effect;
+    if (!effect) return;
+
+    if (effect instanceof MonoEffect || effect instanceof PolyEffect) {
+      effect.apply(level, topics, ...messages);
+    } else if (typeof effect === "function") {
+      effect(level, topics, ...messages);
+    }
   }
 }
 
