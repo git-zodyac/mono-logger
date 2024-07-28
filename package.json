@@ -1,21 +1,24 @@
 {
   "name": "@bebrasmell/mono-logger",
-  "version": "1.4.7",
-  "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
-  "typings": "./dist/index.d.ts",
-  "module": "./dist/index.js",
+  "description": "A simple topic-based logger with side effects",
   "repository": "https://github.com/bebrasmell/mono-logger.git",
   "author": "Zak <137602160+bebrasmell@users.noreply.github.com>",
-  "license": "MIT",
+  "version": "1.4.7",
+
   "private": false,
-  "type": "module",
+  "license": "MIT",
   "keywords": [
     "logs",
     "logger",
     "console",
     "topic"
   ],
+
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "typings": "./dist/index.d.ts",
+  "module": "./dist/index.js",
   "files": [
     "dist"
   ],
@@ -26,7 +29,7 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "description": "A simple topic-based logger with side effects",
+
   "scripts": {
     "test": "jest",
     "test:run": "node test.js",

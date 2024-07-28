@@ -32,6 +32,7 @@ export const LOG_LEVELS = {
 export type LogLevel = keyof typeof LOG_LEVELS;
 
 export type TEffect = (
+  timestamp: Date,
   level: LogLevel,
   topics: string[],
   ...messages: any[]
@@ -49,6 +50,7 @@ export interface iLoggerConfig {
 
   /**
    * Side-effect to run when message appears
+   * @param timestamp {Date} Timestamp
    * @param level {LogLevel} Log level (debug, warn, info, error, verbose)
    * @param topics {string[]} Array of topics, sorted from root to leaf
    * @param ...messages {any[]} Spread array of messages

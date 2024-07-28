@@ -1,5 +1,4 @@
-import type { LogLevel, TEffect, iEffect } from "../types";
-import { LOG_LEVELS } from "../types";
+import { LOG_LEVELS, type LogLevel, type TEffect, type iEffect } from "../types";
 
 export class MonoEffect implements iEffect {
   constructor(
@@ -7,9 +6,9 @@ export class MonoEffect implements iEffect {
     public readonly level?: LogLevel,
   ) {
     if (level) {
-      this.apply = (input_level, topics, ...messages) => {
+      this.apply = (ts, input_level, topics, ...messages) => {
         if (LOG_LEVELS[input_level] >= LOG_LEVELS[level]) {
-          return effect(level, topics, ...messages);
+          return effect(ts, level, topics, ...messages);
         }
       };
     } else {
@@ -24,11 +23,11 @@ export class PolyEffect implements iEffect {
   constructor(public readonly level?: LogLevel) {}
 
   private _effects: (TEffect | MonoEffect)[] = new Array(0);
-  public readonly effect: TEffect = (level, topics, ...messages) => {
+  public readonly effect: TEffect = (ts, level, topics, ...messages) => {
     if (this.level && LOG_LEVELS[level] < LOG_LEVELS[this.level]) return;
     for (const effect of this._effects) {
-      if (effect instanceof MonoEffect) effect.apply(level, topics, ...messages);
-      else effect(level, topics, ...messages);
+      if (effect instanceof MonoEffect) effect.apply(ts, level, topics, ...messages);
+      else effect(ts, level, topics, ...messages);
     }
   };
 

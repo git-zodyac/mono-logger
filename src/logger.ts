@@ -81,15 +81,13 @@ export class Logger implements iLogger {
   }
 
   // Formatters
-  private get timestamp() {
-    const ts = new Date();
-
+  private timestamp(ts: Date) {
     if (this._config?.date_format) return this._config?.date_format(ts);
     return DEFAULT_FORMATTER.format(ts);
   }
 
-  private display_params(lvl: LogLevel, topics: string[]) {
-    const display_ts = COLORS["debug" as const](this.timestamp);
+  private display_params(ts: Date, lvl: LogLevel, topics: string[]) {
+    const display_ts = COLORS["debug" as const](this.timestamp(ts));
     const level = `[${COLORS[lvl](CODES[lvl])}]`;
     const topics_str = topics.map((t) => COLORS["fatal" as const](t)).join(":");
 
@@ -158,26 +156,27 @@ export class Logger implements iLogger {
   public fatal = (...args: any[]) => this._log("fatal", args);
 
   private _log(level: LogLevel, args: any[]) {
+    const ts = new Date();
     const topics = this.topics;
 
     if (LOG_LEVELS[this._config?.level ?? "debug"] > LOG_LEVELS[level]) {
-      if (this._config?.force_effect) this._run_effect(level, topics, ...args);
+      if (this._config?.force_effect) this._run_effect(ts, level, topics, ...args);
       return;
     }
 
     const transformed = this._transform(args);
-    console[METHOD[level]](this.display_params(level, topics), ...transformed);
-    this._run_effect(level, topics, ...args);
+    console[METHOD[level]](this.display_params(ts, level, topics), ...transformed);
+    this._run_effect(ts, level, topics, ...args);
   }
 
-  private _run_effect(level: LogLevel, topics: string[], ...messages: any[]) {
+  private _run_effect(ts: Date, level: LogLevel, topics: string[], ...messages: any[]) {
     const effect = this._config?.effect;
     if (!effect) return;
 
     if (effect instanceof MonoEffect || effect instanceof PolyEffect) {
-      effect.apply(level, topics, ...messages);
+      effect.apply(ts, level, topics, ...messages);
     } else if (typeof effect === "function") {
-      effect(level, topics, ...messages);
+      effect(ts, level, topics, ...messages);
     }
   }
 }
