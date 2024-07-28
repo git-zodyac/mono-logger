@@ -22,16 +22,19 @@ export class MonoEffect implements iEffect {
 export class PolyEffect implements iEffect {
   constructor(public readonly level?: LogLevel) {}
 
-  private _effects: (TEffect | MonoEffect)[] = new Array(0);
+  private _effects: (TEffect | iEffect)[] = new Array(0);
   public readonly effect: TEffect = (ts, level, topics, ...messages) => {
     if (this.level && LOG_LEVELS[level] < LOG_LEVELS[this.level]) return;
     for (const effect of this._effects) {
-      if (effect instanceof MonoEffect) effect.apply(ts, level, topics, ...messages);
-      else effect(ts, level, topics, ...messages);
+      if (effect instanceof MonoEffect || effect instanceof PolyEffect) {
+        effect.apply(ts, level, topics, ...messages);
+      } else if (typeof effect === "function") {
+        effect(ts, level, topics, ...messages);
+      }
     }
   };
 
-  public add(effect: TEffect | MonoEffect) {
+  public add(effect: TEffect | iEffect) {
     this._effects.push(effect);
   }
 

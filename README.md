@@ -114,7 +114,7 @@ const parent = logger.topic("parent", {
 });
 
 const child = root.topic("child", {
-  ...parent.config,
+  ...parent._config,
   effect: () => { /* do something else */ },
 });
 ```
@@ -199,6 +199,19 @@ logger.fatal("Nope, I'm dead");
 // 2024-07-26T18:47:01.978Z [FTL] target_module_name Nope, I'm dead
 // Warning has been recorded and saved
 // x_x
+```
+
+You can use ```PolyEffect``` to execute both parent and current effects. This will allow you to bypass the configuration inheritance limitation:
+
+```ts
+const poly_effect = new PolyEffect();
+if (parent._config.effect) poly_effect.add(parent._config.effect);
+poly_effect.add(() => { /* New effect */ });
+
+const child = parent.topic("child", {
+  ...parent._config,
+  effect: poly_effect,
+});
 ```
 
 ## License
