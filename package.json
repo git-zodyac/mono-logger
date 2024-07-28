@@ -1,6 +1,6 @@
 {
   "name": "@bebrasmell/mono-logger",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "main": "dist/index.js",
   "repository": "https://github.com/bebrasmell/mono-logger.git",
   "author": "Zak <137602160+bebrasmell@users.noreply.github.com>",
