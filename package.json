@@ -3,7 +3,7 @@
   "description": "A simple topic-based logger with side effects",
   "repository": "https://github.com/bebrasmell/mono-logger.git",
   "author": "Zak <137602160+bebrasmell@users.noreply.github.com>",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "private": false,
   "license": "MIT",
   "keywords": [
