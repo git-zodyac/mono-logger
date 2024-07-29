@@ -1,5 +1,4 @@
 import { genHash } from "./__hash";
-import { } from "./effect";
 import logger, { Logger } from "./logger";
 
 jest.mock("./colors");

@@ -5,6 +5,10 @@ export class MonoEffect implements iEffect {
     public readonly effect: TEffect,
     public readonly level?: LogLevel,
   ) {
+    if (typeof effect !== "function") {
+      throw new Error("MonoLogger/MonoEffect: effect must be a function");
+    }
+
     if (level) {
       this.apply = (ts, input_level, topics, ...messages) => {
         if (LOG_LEVELS[input_level] >= LOG_LEVELS[level]) {
@@ -35,6 +39,16 @@ export class PolyEffect implements iEffect {
   };
 
   public add(effect: TEffect | iEffect) {
+    if (
+      typeof effect !== "function" &&
+      !(effect instanceof MonoEffect) &&
+      !(effect instanceof PolyEffect)
+    ) {
+      throw new Error(
+        "MonoLogger/PolyEffect: Effect must be a function, MonoEffect or PolyEffect",
+      );
+    }
+
     this._effects.push(effect);
   }
 

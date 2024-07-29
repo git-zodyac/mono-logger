@@ -53,20 +53,24 @@ const METHOD: Record<LogLevel, "log" | "info" | "warn" | "error"> = {
  * @param parent {Logger} Ancestor logger to inherit from
  */
 export class Logger implements iLogger {
-  constructor(
-    private readonly subject?: string,
-    public readonly _config?: iLoggerConfig,
-    public readonly _parent?: Logger,
-  ) {}
-
   /**
    * A list of topics for current logger instance.
    * The list will include all the parents topics ordered from **root** logger to **leaf**
    */
-  public get topics(): string[] {
+  public readonly topics: string[];
+  private readonly _topics_str: string;
+
+  private readonly _date_formatter: (date: Date) => string;
+
+  constructor(
+    private readonly subject?: string,
+    public readonly _config?: iLoggerConfig,
+    public readonly _parent?: Logger,
+  ) {
     const prefix = this._parent ? this._parent.topics : [];
-    if (this.subject) return [...prefix, this.subject];
-    return prefix;
+    this.topics = this.subject ? [...prefix, this.subject] : prefix;
+    this._topics_str = this.topics.map((t) => COLORS["fatal" as const](t)).join(":");
+    this._date_formatter = _config?.date_format ?? DEFAULT_FORMATTER.format;
   }
 
   // Factories
@@ -81,19 +85,13 @@ export class Logger implements iLogger {
   }
 
   // Formatters
-  private timestamp(ts: Date) {
-    if (this._config?.date_format) return this._config?.date_format(ts);
-    return DEFAULT_FORMATTER.format(ts);
-  }
-
-  private display_params(ts: Date, lvl: LogLevel, topics: string[]) {
-    const display_ts = COLORS["debug" as const](this.timestamp(ts));
+  private display_params(ts: Date, lvl: LogLevel) {
+    const display_ts = COLORS["debug" as const](this._date_formatter(ts));
     const level = `[${COLORS[lvl](CODES[lvl])}]`;
-    const topics_str = topics.map((t) => COLORS["fatal" as const](t)).join(":");
-
     let output = `${display_ts} ${level}`;
+
     if (this._config?.prefix) output += ` ${this._config?.prefix()}`;
-    if (topics_str) output += ` ${topics_str}`;
+    if (this._topics_str) output += ` ${this._topics_str}`;
 
     return output;
   }
@@ -157,26 +155,25 @@ export class Logger implements iLogger {
 
   private _log(level: LogLevel, args: any[]) {
     const ts = new Date();
-    const topics = this.topics;
 
     if (LOG_LEVELS[this._config?.level ?? "debug"] > LOG_LEVELS[level]) {
-      if (this._config?.force_effect) this._run_effect(ts, level, topics, ...args);
+      if (this._config?.force_effect) this._run_effect(ts, level, this.topics, ...args);
       return;
     }
 
     const transformed = this._transform(args);
-    console[METHOD[level]](this.display_params(ts, level, topics), ...transformed);
-    this._run_effect(ts, level, topics, ...args);
+    console[METHOD[level]](this.display_params(ts, level), ...transformed);
+    this._run_effect(ts, level, ...args);
   }
 
-  private _run_effect(ts: Date, level: LogLevel, topics: string[], ...messages: any[]) {
+  private _run_effect(ts: Date, level: LogLevel, ...messages: any[]) {
     const effect = this._config?.effect;
     if (!effect) return;
 
     if (effect instanceof MonoEffect || effect instanceof PolyEffect) {
-      effect.apply(ts, level, topics, ...messages);
+      effect.apply(ts, level, this.topics, ...messages);
     } else if (typeof effect === "function") {
-      effect(ts, level, topics, ...messages);
+      effect(ts, level, this.topics, ...messages);
     }
   }
 }

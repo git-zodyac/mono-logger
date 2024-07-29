@@ -24,6 +24,21 @@ test("Should call MonoEffect", () => {
   expect(call).toContain(hash);
 });
 
+test("Should throw if anything but function is used as an effect in MonoEffect", () => {
+  expect(() => new MonoEffect("" as any)).toThrow();
+  expect(() => {
+    const mono = new MonoEffect(() => {});
+    new MonoEffect(mono as any);
+  }).toThrow();
+});
+
+test("Should throw if invalid effect is used to create a PolyEffect", () => {
+  expect(() => {
+    const poly = new PolyEffect();
+    poly.add("" as any);
+  }).toThrow();
+});
+
 test("Should call MonoEffect if minimum log level passed", () => {
   const effect = jest.fn();
   const mono_effect = new MonoEffect(effect, "info");
