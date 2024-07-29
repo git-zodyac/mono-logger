@@ -214,5 +214,19 @@ const child = parent.topic("child", {
 });
 ```
 
+## Recommended extensions
+- [Writer](https://github.com/bebrasmell/mono-logger-writer) – Writes logs to files.
+
+## Contributing
+
+Contribution is always welcomed!
+These are several points of special interest:
+
+- Improve test coverage (`Jest`);
+- Edge case exploration;
+- Stability and efficiency improvements (KISS);
+
+You are also welcome to extend and improve plugin ecosystem.
+
 ## License
 MIT
