@@ -1,8 +1,8 @@
 # Mono-logger
-![Test coverage - statements](./badges/badge-statements.svg)
-![Test coverage - functions](./badges/badge-functions.svg)
-![Test coverage - lines](./badges/badge-lines.svg)
-![Test coverage - branches](./badges/badge-branches.svg)
+![NPM Version](https://img.shields.io/npm/v/%40bebrasmell%2Fmono-logger)
+![NPM Downloads](https://img.shields.io/npm/dw/%40bebrasmell%2Fmono-logger)
+![npm bundle size](https://img.shields.io/bundlephobia/min/%40bebrasmell%2Fmono-logger)
+![Test coverage](./badges/coverage.svg)
 
 A simple logger module with topics and side-effects capabilities.
 It comes pretty useful when need to share common loggers across multiple modules or to nest loggers with different topics (e.g. function executors for debugging purposes).
