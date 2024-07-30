@@ -1,4 +1,4 @@
-name: Perform linting
+name: Lint
 
 on:
   workflow_call:
@@ -8,7 +8,7 @@ on:
       - develop
 
 jobs:
-  biome:
+  lint:
     runs-on: ubuntu-latest
     steps:
       # Checkout
@@ -23,7 +23,7 @@ jobs:
 
       # Install biome
       - name: Install Biome
-        run: yarn install @biomejs/biome
+        run: yarn add --dev @biomejs/biome
 
       # Run linter
       - name: Lint

@@ -1,4 +1,4 @@
-name: Test PR
+name: Test Pull Request
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - branchname
 
 jobs:
-  jest:
+  test:
     runs-on: ubuntu-latest
     steps:
       # Checkout
@@ -27,7 +27,7 @@ jobs:
       # Run tests
       - name: Test
         run: yarn test
-  biome:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Lint

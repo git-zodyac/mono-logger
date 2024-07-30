@@ -1,4 +1,4 @@
-name: Perform linting
+name: Create badges
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - develop
 
 jobs:
-  jest:
+  create-badge:
     runs-on: ubuntu-latest
     steps:
       # Checkout
