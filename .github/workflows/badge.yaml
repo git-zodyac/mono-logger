@@ -35,13 +35,10 @@ jobs:
         run: yarn test:badges
 
       # Commit changes
-      - name: Commit CHANGELOG.md and package.json changes and create tag
-        run: |
-          git add "badges/coverage.svg"
-          git commit -m "chore: update badge"
-
-      # Push repository changes
-      - name: Push changes to repository
+      - name: Commit coverage badge changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: git push origin
+        run: |
+          git add "badges/coverage.svg"
+          git commit -m "chore: update badge" || exit 0
+          git push origin || exit 0
