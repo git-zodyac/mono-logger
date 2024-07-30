@@ -30,7 +30,7 @@
   "scripts": {
     "test": "jest",
     "test:run": "node test.js",
-    "test:badges": "yarn test && make-coverage-badge --report-path ./artifacts/coverage/coverage-summary.json --output-path ./badges/coverage.svg",
+    "test:badges": "jest --coverage && make-coverage-badge --report-path ./artifacts/coverage/coverage-summary.json --output-path ./badges/coverage.svg",
     "build": "tsup",
     "lint": "biome check",
     "lint:fix": "biome check --write ."
