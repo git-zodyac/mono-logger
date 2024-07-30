@@ -5,7 +5,7 @@ It comes pretty useful when need to share common loggers across multiple modules
 
 Default logs format:
 ```log
-7/26/2024, 20:54:26 [DBG] hello, world
+7/26/2024, 20:54:26 [DBG] root_topic:topic:subtopic hello, world
 ```
 
 ## Changelog
@@ -119,8 +119,9 @@ const child = root.topic("child", {
 });
 ```
 
-> ![note] You should not modify or override existing configuration.
-That is done on purpose to preserve verbosity and functional consistency.
+> [!NOTE]
+> You should not modify or override existing configuration.
+> That is done on purpose to preserve verbosity and functional consistency.
 
 ### MonoEffects and PolyEffects
 ```MonoEffect``` is a wrapper around your effect function with minimum log level check. Imagine this:
