@@ -32,7 +32,7 @@ jobs:
 
       # Run tests
       - name: Test
-        run: yarn test:badge
+        run: yarn test:badges
 
       # Commit changes
       - name: Commit CHANGELOG.md and package.json changes and create tag
