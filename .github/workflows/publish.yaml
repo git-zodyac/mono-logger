@@ -28,7 +28,7 @@ jobs:
 
       # Tests
       - name: Run tests
-        run: yarn test
+        run: yarn test:badges
 
       # Configure Git
       - name: Git configuration

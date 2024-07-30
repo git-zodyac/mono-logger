@@ -1,4 +1,8 @@
 # Mono-logger
+![Test coverage - statements](./badges/badge-statements.svg)
+![Test coverage - functions](./badges/badge-functions.svg)
+![Test coverage - lines](./badges/badge-lines.svg)
+![Test coverage - branches](./badges/badge-branches.svg)
 
 A simple logger module with topics and side-effects capabilities.
 It comes pretty useful when need to share common loggers across multiple modules or to nest loggers with different topics (e.g. function executors for debugging purposes).
@@ -215,17 +219,17 @@ const child = parent.topic("child", {
 });
 ```
 
-## Recommended extensions
-- [Writer](https://github.com/bebrasmell/mono-logger-writer) – Writes logs to files.
+## Extensions
+The list of known extensions and a guide on how to submit a new one can be found [here](./EXTENSIONS.md).
 
 ## Contributing
 
 Contribution is always welcomed!
 These are several points of special interest:
 
-- Improve test coverage (`Jest`);
+- Writing tests (`Jest`);
 - Edge case exploration;
-- Stability and efficiency improvements (KISS);
+- Stability and performance improvements (KISS);
 
 You are also welcome to extend and improve plugin ecosystem.
 

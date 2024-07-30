@@ -6,6 +6,11 @@ export default ({
     "<rootDir>/src/setup.jest.ts"
   ],
   collectCoverage: true,
+  "coverageReporters": [
+    "json-summary",
+    "text",
+    "lcov"
+  ],
   coverageDirectory: "artifacts/coverage",
   collectCoverageFrom: [
     "src/**/*.ts",
