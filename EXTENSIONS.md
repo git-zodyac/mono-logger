@@ -10,4 +10,4 @@ If you'd like to submit, here are the steps you can take:
 
 | Name | Description | Package | Downloads |
 | :--- | :---------- | :------ | :-------- |
-| [Writer](https://github.com/bebrasmell/mono-logger-writer) | Writes logs to files | [@bebrasmell/mono-logger-writer](https://npmjs.com/package/@bebrasmell/mono-logger-writer) | ![NPM Downloads](https://img.shields.io/npm/dw/%40bebrasmell%2Fmono-logger) |
+| [Writer](https://github.com/zodyac/mono-logger-writer) | Writes logs to files | [@zodyac/mono-logger-writer](https://npmjs.com/package/@zodyac/mono-logger-writer) | ![NPM Downloads](https://img.shields.io/npm/dw/%40zodyac%2Fmono-logger) |

@@ -1,7 +1,7 @@
 # Mono-logger
-![NPM Version](https://img.shields.io/npm/v/%40bebrasmell%2Fmono-logger)
-![NPM Downloads](https://img.shields.io/npm/dw/%40bebrasmell%2Fmono-logger)
-![npm bundle size](https://img.shields.io/bundlephobia/min/%40bebrasmell%2Fmono-logger)
+![NPM Version](https://img.shields.io/npm/v/%40zodyac%2Fmono-logger)
+![NPM Downloads](https://img.shields.io/npm/dw/%40zodyac%2Fmono-logger)
+![npm bundle size](https://img.shields.io/bundlephobia/min/%40zodyac%2Fmono-logger)
 ![Test coverage](./badges/coverage.svg)
 
 A simple logger module with topics and side-effects capabilities.
@@ -17,20 +17,20 @@ Please see [CHANGELOG](./CHANGELOG.md) for latest changes.
 
 ## Installation
 ```bash
-yarn add @bebrasmell/mono-logger
+yarn add @zodyac/mono-logger
 ```
 
 Or
 
 ```bash
-npm i @bebrasmell/mono-logger
+npm i @zodyac/mono-logger
 ```
 
 ## Topics
 You can create a new child logger with a specific topic. This way you can filter logs by topic.
 
 ```typescript
-import { Logger } from '@bebrasmell/mono-logger';
+import { Logger } from '@zodyac/mono-logger';
 
 const logger = new Logger();
 const subLogger = logger.topic('sub-topic');
@@ -45,7 +45,7 @@ deepSubLogger.log('hello, world');
 You can also access parent logger from a child logger.
 
 ```typescript
-import { Logger } from '@bebrasmell/mono-logger';
+import { Logger } from '@zodyac/mono-logger';
 
 const logger = new Logger();
 const subLogger = logger.topic('sub-topic');
@@ -83,7 +83,7 @@ You can configure the logger with:
 
 
 ```typescript
-import { Logger } from '@bebrasmell/mono-logger';
+import { Logger } from '@zodyac/mono-logger';
 
 const ex_logger = new Logger('example', {
   level: 'debug',
@@ -135,7 +135,7 @@ const child = root.topic("child", {
 
 In such situations, you can use ```MonoEffect```:
 ```ts
-import { MonoEffect } from "@bebrasmell/mono-logger";
+import { MonoEffect } from "@zodyac/mono-logger";
 
 const handleWarnings = (lvl, topics, ...messages) => {
   /*
@@ -163,7 +163,7 @@ logger.warn("Example warning");
 ```PolyEffect``` simply concatenates your effects and fires them one after another.
 
 ```ts
-import { MonoEffect, PolyEffect } from "@bebrasmell/mono-logger";
+import { MonoEffect, PolyEffect } from "@zodyac/mono-logger";
 
 const handleWarnings = (lvl, topics, ...messages) => {
   /*

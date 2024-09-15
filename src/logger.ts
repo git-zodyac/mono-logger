@@ -35,14 +35,14 @@ const METHOD: Record<LogLevel, "log" | "info" | "warn" | "error"> = {
  *
  * You can create one to be your new root by calling
  * ```ts
- * import { Logger } from "@bebrasmell/mono-logger";
+ * import { Logger } from "@zodyac/mono-logger";
  *
  * const root_logger = new Logger();
  * ```
  *
  * Or you can use the default or existing logger to create a sub-topic
  * ```ts
- * import logger from "@bebrasmell/mono-logger";
+ * import logger from "@zodyac/mono-logger";
  *
  * const app_logger = logger.topic("My_app_root_topic");
  * ```

@@ -1,9 +1,9 @@
 {
-  "name": "@bebrasmell/mono-logger",
+  "name": "@zodyac/mono-logger",
   "description": "A simple topic-based logger with side effects",
-  "repository": "https://github.com/bebrasmell/mono-logger.git",
-  "author": "Zak <137602160+bebrasmell@users.noreply.github.com>",
-  "version": "1.5.4",
+  "repository": "https://github.com/zodyac/mono-logger.git",
+  "author": "Zak <137602160+zodyac@users.noreply.github.com>",
+  "version": "2.0.0",
   "private": false,
   "license": "MIT",
   "keywords": [
