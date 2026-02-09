@@ -1,6 +1,8 @@
+import { DEFAULT_IMPL } from "./console";
 import { COLORS } from "./colors";
 import { MonoEffect, PolyEffect } from "./effect";
-import { LOG_LEVELS, type LogLevel, type iLogger, type iLoggerConfig } from "./types";
+import type { LogLevel, TLogImplementation, iLogger, iLoggerConfig } from "./types";
+import { LOG_LEVELS } from "./types";
 
 const DEFAULT_FORMATTER = new Intl.DateTimeFormat("en-US", {
   hour: "numeric",
@@ -19,15 +21,6 @@ export const CODES: Record<LogLevel, string> = {
   error: "ERR",
   verbose: "VRB",
   fatal: "FTL",
-};
-
-const METHOD: Record<LogLevel, "log" | "info" | "warn" | "error"> = {
-  debug: "log",
-  verbose: "log",
-  info: "info",
-  warn: "warn",
-  error: "error",
-  fatal: "error",
 };
 
 /**
@@ -60,7 +53,8 @@ export class Logger implements iLogger {
   public readonly topics: string[];
   private readonly _topics_str: string;
 
-  private readonly _date_formatter: (date: Date) => string;
+  private readonly _dateFormatter: (date: Date) => string;
+  private readonly _impl: TLogImplementation;
 
   constructor(
     private readonly subject?: string,
@@ -70,7 +64,8 @@ export class Logger implements iLogger {
     const prefix = this._parent ? this._parent.topics : [];
     this.topics = this.subject ? [...prefix, this.subject] : prefix;
     this._topics_str = this.topics.map((t) => COLORS["fatal" as const](t)).join(":");
-    this._date_formatter = _config?.date_format ?? DEFAULT_FORMATTER.format;
+    this._dateFormatter = _config?.date_format ?? DEFAULT_FORMATTER.format;
+    this._impl = _config?.implementation ?? this._parent?._impl ?? DEFAULT_IMPL;
   }
 
   // Factories
@@ -85,8 +80,8 @@ export class Logger implements iLogger {
   }
 
   // Formatters
-  private display_params(ts: Date, lvl: LogLevel) {
-    const display_ts = COLORS["debug" as const](this._date_formatter(ts));
+  private displayParams(ts: Date, lvl: LogLevel) {
+    const display_ts = COLORS["debug" as const](this._dateFormatter(ts));
     const level = `[${COLORS[lvl](CODES[lvl])}]`;
     let output = `${display_ts} ${level}`;
 
@@ -106,49 +101,49 @@ export class Logger implements iLogger {
   // Methods
   /**
    * Alias for ```DEBUG``` method.
-   * Uses ```console.log```
+   * Uses ```console.log``` or custom implementation
    * @param ...arg {any} Message or object to log
    */
   public log = (...args: any[]) => this._log("debug", args);
 
   /**
    * Logs a ```DEBUG``` message
-   * Uses ```console.log```
+   * Uses ```console.log``` or custom implementation
    * @param ...arg {any} Message or object to log
    */
   public debug = (...args: any[]) => this._log("debug", args);
 
   /**
    * Logs a ```VERBOSE``` message
-   * Uses ```console.verbose```
+   * Uses ```console.verbose``` or custom implementation
    * @param ...arg {any} Message or object to log
    */
   public verbose = (...args: any[]) => this._log("verbose", args);
 
   /**
    * Logs an ```INFO``` message
-   * Uses ```console.info```
+   * Uses ```console.info``` or custom implementation
    * @param ...arg {any} Message or object to log
    */
   public info = (...args: any[]) => this._log("info", args);
 
   /**
    * Logs a ```WARN``` message
-   * Uses ```console.warn```
+   * Uses ```console.warn``` or custom implementation
    * @param ...arg {any} Message or object to log
    */
   public warn = (...args: any[]) => this._log("warn", args);
 
   /**
    * Logs an ```ERROR``` message
-   * Uses ```console.error```
+   * Uses ```console.error``` or custom implementation
    * @param ...arg {any} Message or object to log
    */
   public error = (...args: any[]) => this._log("error", args);
 
   /**
    * Logs a ```FATAL``` error message
-   * Uses ```console.error```
+   * Uses ```console.error``` or custom implementation
    * @param ...arg {any} Message or object to log
    */
   public fatal = (...args: any[]) => this._log("fatal", args);
@@ -157,16 +152,18 @@ export class Logger implements iLogger {
     const ts = new Date();
 
     if (LOG_LEVELS[this._config?.level ?? "debug"] > LOG_LEVELS[level]) {
-      if (this._config?.force_effect) this._run_effect(ts, level, this.topics, ...args);
+      if (this._config?.force_effect) this._runEffect(ts, level, this.topics, ...args);
       return;
     }
 
+    const msgParams = this.displayParams(ts, level);
     const transformed = this._transform(args);
-    console[METHOD[level]](this.display_params(ts, level), ...transformed);
-    this._run_effect(ts, level, ...args);
+
+    this._impl(level, msgParams, ...transformed);
+    this._runEffect(ts, level, ...args);
   }
 
-  private _run_effect(ts: Date, level: LogLevel, ...messages: any[]) {
+  private _runEffect(ts: Date, level: LogLevel, ...messages: any[]) {
     const effect = this._config?.effect;
     if (!effect) return;
 

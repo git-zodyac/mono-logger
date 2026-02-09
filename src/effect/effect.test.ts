@@ -1,4 +1,6 @@
 import { genHash } from "../__hash";
+import logger from "../logger";
+import { MonoEffect, PolyEffect } from "./effect";
 
 beforeAll(() => {
   console.log = jest.fn();
@@ -6,9 +8,6 @@ beforeAll(() => {
   console.warn = jest.fn();
   console.error = jest.fn();
 });
-
-import logger from "../logger";
-import { MonoEffect, PolyEffect } from "./effect";
 
 test("Should call MonoEffect", () => {
   const effect = jest.fn();

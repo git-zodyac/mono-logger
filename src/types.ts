@@ -1,16 +1,10 @@
 export interface iLogger {
   warn: (...args: any[]) => void;
-
   error: (...args: any[]) => void;
-
   info: (...args: any[]) => void;
-
   debug: (...args: any[]) => void;
-
   log: (...args: any[]) => void;
-
   verbose: (...args: any[]) => void;
-
   fatal: (...args: any[]) => void;
 }
 
@@ -103,6 +97,16 @@ export interface iLoggerConfig {
    * @default false
    */
   readonly force_effect?: boolean;
+
+  /**
+   * Custom log implementation. Overrides default console methods.
+   * @example
+   * ```ts
+   * const custom_log: TLogImplementation = (level, paramsStr, ...args) => {
+   *   custom_console.sendLog(`${paramsStr} ${JSON.stringify(args)}`);
+   * };
+   */
+  readonly implementation?: TLogImplementation;
 }
 
 /**
@@ -119,3 +123,9 @@ export interface iEffect {
    */
   readonly apply: TEffect;
 }
+
+export type TLogImplementation = (
+  level: LogLevel,
+  paramsStr: string,
+  ...args: any[]
+) => void;

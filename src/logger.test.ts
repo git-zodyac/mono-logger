@@ -226,3 +226,18 @@ test("Should include prefix", () => {
 
   expect(call[0].endsWith(hash)).toBe(true);
 });
+
+test("Should use custom implementation", () => {
+  const hash = genHash();
+  const implementation = jest.fn();
+  const logger = new Logger(undefined, {
+    implementation,
+  });
+
+  logger.debug(hash);
+
+  expect(implementation).toHaveBeenCalledTimes(1);
+  const call = implementation.mock.calls[0];
+
+  expect(call).toContain(hash);
+});
