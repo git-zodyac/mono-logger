@@ -1,4 +1,5 @@
-import { genHash } from "./__hash";
+import { expect, test } from "vitest";
+import { genHash } from "./__mocks__/hash";
 import { COLORS } from "./colors";
 
 test("Should be defined", () => {

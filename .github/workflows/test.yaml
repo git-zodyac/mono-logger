@@ -1,0 +1,31 @@
+name: PR tests
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "src/**"
+    branches:
+      - main
+
+jobs:
+  test-lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Setup bun
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      # Install deps
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # Run tests
+      - name: Test
+        run: bun test

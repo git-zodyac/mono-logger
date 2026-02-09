@@ -1,16 +1,17 @@
-import { genHash } from "../__hash";
+import { beforeAll, expect, test, vi } from "vitest";
+import { genHash } from "../__mocks__/hash";
 import logger from "../logger";
 import { MonoEffect, PolyEffect } from "./effect";
 
 beforeAll(() => {
-  console.log = jest.fn();
-  console.info = jest.fn();
-  console.warn = jest.fn();
-  console.error = jest.fn();
+  console.log = vi.fn();
+  console.info = vi.fn();
+  console.warn = vi.fn();
+  console.error = vi.fn();
 });
 
 test("Should call MonoEffect", () => {
-  const effect = jest.fn();
+  const effect = vi.fn();
   const mono_effect = new MonoEffect(effect);
   const t_logger = logger.topic("test", { effect: mono_effect });
 
@@ -39,7 +40,7 @@ test("Should throw if invalid effect is used to create a PolyEffect", () => {
 });
 
 test("Should call MonoEffect if minimum log level passed", () => {
-  const effect = jest.fn();
+  const effect = vi.fn();
   const mono_effect = new MonoEffect(effect, "info");
   const t_logger = logger.topic("test", {
     effect: mono_effect,
@@ -53,8 +54,8 @@ test("Should call MonoEffect if minimum log level passed", () => {
 });
 
 test("Should call PolyEffect", () => {
-  const effect_0 = jest.fn();
-  const effect_1 = jest.fn();
+  const effect_0 = vi.fn();
+  const effect_1 = vi.fn();
 
   const mono_effect_0 = new MonoEffect(effect_0);
   const mono_effect_1 = new MonoEffect(effect_1);
@@ -79,8 +80,8 @@ test("Should call PolyEffect", () => {
 });
 
 test("PolyEffect should call both MonoEffects and functions", () => {
-  const effect_0 = jest.fn();
-  const effect_1 = jest.fn();
+  const effect_0 = vi.fn();
+  const effect_1 = vi.fn();
 
   const mono_effect_0 = new MonoEffect(effect_0);
   const poly_effect = new PolyEffect();
@@ -104,8 +105,8 @@ test("PolyEffect should call both MonoEffects and functions", () => {
 });
 
 test("PolyEffect should check minimum log level", () => {
-  const effect_0 = jest.fn();
-  const effect_1 = jest.fn();
+  const effect_0 = vi.fn();
+  const effect_1 = vi.fn();
 
   const mono_effect_0 = new MonoEffect(effect_0);
   const mono_effect_1 = new MonoEffect(effect_1);
@@ -125,8 +126,8 @@ test("PolyEffect should check minimum log level", () => {
 });
 
 test("PolyEffect must be able to execute other PolyEffects", () => {
-  const effect_0 = jest.fn();
-  const effect_1 = jest.fn();
+  const effect_0 = vi.fn();
+  const effect_1 = vi.fn();
 
   const mono_effect_0 = new MonoEffect(effect_0);
   const mono_effect_1 = new MonoEffect(effect_1);

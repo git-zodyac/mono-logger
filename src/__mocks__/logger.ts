@@ -1,12 +1,14 @@
+import { vi } from 'vitest';
+
 const logger = {
-  topics: jest.fn(() => []),
-  topic: jest.fn(() => logger),
-  log: jest.fn(),
-  debug: jest.fn(),
-  info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
-  fatal: jest.fn(),
+  topics: vi.fn(() => []),
+  topic: vi.fn(() => logger),
+  log: vi.fn(),
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+  fatal: vi.fn(),
 };
 
 export default logger;

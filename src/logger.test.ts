@@ -1,10 +1,11 @@
-import { genHash } from "./__hash";
+import { beforeEach, expect, Mock, test, vi } from 'vitest';
+import { genHash } from "./__mocks__/hash";
 import logger, { Logger } from "./logger";
 
-jest.mock("./colors");
+vi.mock("./colors");
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 test("Should have default logger", () => {
@@ -16,7 +17,7 @@ test("Default logger should not have subject", () => {
 });
 
 test("Should call console.log for debug", () => {
-  console.log = jest.fn();
+  console.log = vi.fn();
 
   logger.debug("hello");
 
@@ -24,7 +25,7 @@ test("Should call console.log for debug", () => {
 });
 
 test("Should call console.log for verbose", () => {
-  console.log = jest.fn();
+  console.log = vi.fn();
 
   logger.verbose("hello");
 
@@ -32,7 +33,7 @@ test("Should call console.log for verbose", () => {
 });
 
 test("Should call console.log for log", () => {
-  console.log = jest.fn();
+  console.log = vi.fn();
 
   logger.log("hello");
 
@@ -40,7 +41,7 @@ test("Should call console.log for log", () => {
 });
 
 test("Should call console.info for info", () => {
-  console.info = jest.fn();
+  console.info = vi.fn();
 
   logger.info("hello");
 
@@ -48,14 +49,14 @@ test("Should call console.info for info", () => {
 });
 
 test("Should call console.warn for warn", () => {
-  console.warn = jest.fn();
+  console.warn = vi.fn();
   logger.warn("hello");
 
   expect(console.warn).toHaveBeenCalledTimes(1);
 });
 
 test("Should call console.error for error", () => {
-  console.error = jest.fn();
+  console.error = vi.fn();
 
   logger.error("hello");
 
@@ -63,7 +64,7 @@ test("Should call console.error for error", () => {
 });
 
 test("Should call console.error for fatal", () => {
-  console.error = jest.fn();
+  console.error = vi.fn();
 
   logger.fatal("hello");
 
@@ -71,14 +72,14 @@ test("Should call console.error for fatal", () => {
 });
 
 test("Should include given content", () => {
-  console.log = jest.fn();
+  console.log = vi.fn();
   const hash_0 = genHash();
   const hash_1 = genHash();
   const hash_2 = genHash();
 
   logger.debug(hash_0, hash_1, hash_2);
 
-  const call = (console.log as jest.Mock).mock.calls[0];
+  const call = (console.log as Mock).mock.calls[0];
 
   expect(call).toContain(hash_0);
   expect(call).toContain(hash_1);
@@ -91,10 +92,10 @@ test("Should include link to parent topic", () => {
 });
 
 test("Should include date", () => {
-  console.log = jest.fn();
+  console.log = vi.fn();
   logger.debug("hello");
 
-  const call = (console.log as jest.Mock).mock.calls[0];
+  const call = (console.log as Mock).mock.calls[0];
   const date_arg = call.find((e: string) =>
     e.match(/(0?[1-9]|1[0-2])\/(0?[1-9]|[12][0-9]|3[01])\/\d{4}/g),
   );
@@ -103,10 +104,10 @@ test("Should include date", () => {
 });
 
 test("Should include time", () => {
-  console.log = jest.fn();
+  console.log = vi.fn();
   logger.debug("hello");
 
-  const call = (console.log as jest.Mock).mock.calls[0];
+  const call = (console.log as Mock).mock.calls[0];
   const time_arg = call.find((e: string) =>
     e.match(/(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d/g),
   );
@@ -127,7 +128,7 @@ test("Should include parent topics", () => {
 });
 
 test("Should call side effect", () => {
-  const effect = jest.fn();
+  const effect = vi.fn();
   const t_logger = logger.topic("test", { effect });
 
   const hash = genHash();
@@ -140,10 +141,10 @@ test("Should call side effect", () => {
 });
 
 test("Should call transformer per element", () => {
-  console.log = jest.fn();
+  console.log = vi.fn();
 
   const t_hash = genHash();
-  const transform = jest.fn((s) => `${t_hash}_${s}`);
+  const transform = vi.fn((s) => `${t_hash}_${s}`);
   const t_logger = logger.topic("test", { transform });
 
   const hash_0 = genHash();
@@ -153,14 +154,14 @@ test("Should call transformer per element", () => {
   expect(transform).toHaveBeenCalledTimes(2);
   expect(console.log).toHaveBeenCalledTimes(1);
 
-  const call = (console.log as jest.Mock).mock.calls[0];
+  const call = (console.log as Mock).mock.calls[0];
   expect(call).toContain(`${t_hash}_${hash_0}`);
   expect(call).toContain(`${t_hash}_${hash_1}`);
 });
 
 test("Should ignore message if log level is higher", () => {
-  console.log = jest.fn();
-  console.info = jest.fn();
+  console.log = vi.fn();
+  console.info = vi.fn();
 
   const t_logger = logger.topic("test", {
     level: "verbose",
@@ -174,8 +175,8 @@ test("Should ignore message if log level is higher", () => {
 });
 
 test("Should run side effect if forced", () => {
-  console.log = jest.fn();
-  const effect = jest.fn();
+  console.log = vi.fn();
+  const effect = vi.fn();
 
   const t_logger = logger.topic("test", {
     level: "verbose",
@@ -196,10 +197,10 @@ test("Should be instanced with new keyword", () => {
 });
 
 test("Should be able to use custom date formatter", () => {
-  console.log = jest.fn();
+  console.log = vi.fn();
 
   const hash = genHash();
-  const date_format = jest.fn(() => hash);
+  const date_format = vi.fn(() => hash);
   const logger = new Logger(undefined, {
     date_format,
   });
@@ -207,14 +208,14 @@ test("Should be able to use custom date formatter", () => {
   logger.debug("test");
 
   expect(date_format).toHaveBeenCalledTimes(1);
-  const call = (console.log as jest.Mock).mock.calls[0];
+  const call = (console.log as Mock).mock.calls[0];
 
   expect(call[0].startsWith(hash)).toBe(true);
 });
 
 test("Should include prefix", () => {
   const hash = genHash();
-  const prefix = jest.fn(() => hash);
+  const prefix = vi.fn(() => hash);
   const logger = new Logger(undefined, {
     prefix,
   });
@@ -222,14 +223,14 @@ test("Should include prefix", () => {
   logger.debug("test");
 
   expect(prefix).toHaveBeenCalledTimes(1);
-  const call = (console.log as jest.Mock).mock.calls[0];
+  const call = (console.log as Mock).mock.calls[0];
 
   expect(call[0].endsWith(hash)).toBe(true);
 });
 
 test("Should use custom implementation", () => {
   const hash = genHash();
-  const implementation = jest.fn();
+  const implementation = vi.fn();
   const logger = new Logger(undefined, {
     implementation,
   });

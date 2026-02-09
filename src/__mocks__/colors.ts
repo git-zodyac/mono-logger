@@ -1,8 +1,10 @@
+import { vi } from 'vitest';
+
 export const COLORS = {
-  debug: jest.fn((s) => s),
-  warn: jest.fn((s) => s),
-  info: jest.fn((s) => s),
-  error: jest.fn((s) => s),
-  verbose: jest.fn((s) => s),
-  fatal: jest.fn((s) => s),
+  debug: vi.fn((s) => s),
+  warn: vi.fn((s) => s),
+  info: vi.fn((s) => s),
+  error: vi.fn((s) => s),
+  verbose: vi.fn((s) => s),
+  fatal: vi.fn((s) => s),
 };
