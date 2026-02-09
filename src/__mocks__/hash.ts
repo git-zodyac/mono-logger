@@ -1,4 +1,4 @@
 export function genHash() {
-  const ts = Math.floor(new Date().getTime() * Math.random() * 100000);
+  const ts = Math.floor(Date.now() * Math.random() * 100000);
   return ts.toString(16).substring(8);
 }

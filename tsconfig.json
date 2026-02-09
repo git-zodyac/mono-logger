@@ -9,6 +9,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+    "skipLibCheck": true,
     "baseUrl": "./src",
     "declaration": true,
     "sourceMap": true,
@@ -20,7 +21,7 @@
   },
   "include": ["src/**/*.ts"],
   "exclude": [
-    "src/test-setup.ts",
+    "src/setup.vitest.ts",
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "dist",
