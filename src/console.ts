@@ -1,4 +1,4 @@
-import { LogLevel, TLogImplementation } from "./types";
+import type { LogLevel, TLogImplementation } from "./types";
 
 const METHOD: Record<LogLevel, "log" | "info" | "warn" | "error"> = {
   debug: "log",

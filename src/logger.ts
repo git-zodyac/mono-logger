@@ -1,7 +1,7 @@
-import { DEFAULT_IMPL } from "./console";
 import { COLORS } from "./colors";
+import { DEFAULT_IMPL } from "./console";
 import { MonoEffect, PolyEffect } from "./effect";
-import type { LogLevel, TLogImplementation, iLogger, iLoggerConfig } from "./types";
+import type { iLogger, iLoggerConfig, LogLevel, TLogImplementation } from "./types";
 import { LOG_LEVELS } from "./types";
 
 const DEFAULT_FORMATTER = new Intl.DateTimeFormat("en-US", {
@@ -51,7 +51,7 @@ export class Logger implements iLogger {
    * The list will include all the parents topics ordered from **root** logger to **leaf**
    */
   public readonly topics: string[];
-  private readonly _topics_str: string;
+  private readonly _topicsStr: string;
 
   private readonly _dateFormatter: (date: Date) => string;
   private readonly _impl: TLogImplementation;
@@ -63,8 +63,8 @@ export class Logger implements iLogger {
   ) {
     const prefix = this._parent ? this._parent.topics : [];
     this.topics = this.subject ? [...prefix, this.subject] : prefix;
-    this._topics_str = this.topics.map((t) => COLORS["fatal" as const](t)).join(":");
-    this._dateFormatter = _config?.date_format ?? DEFAULT_FORMATTER.format;
+    this._topicsStr = this.topics.map((t) => COLORS["fatal" as const](t)).join(":");
+    this._dateFormatter = _config?.dateFormatter ?? DEFAULT_FORMATTER.format;
     this._impl = _config?.implementation ?? this._parent?._impl ?? DEFAULT_IMPL;
   }
 
@@ -86,7 +86,7 @@ export class Logger implements iLogger {
     let output = `${display_ts} ${level}`;
 
     if (this._config?.prefix) output += ` ${this._config?.prefix()}`;
-    if (this._topics_str) output += ` ${this._topics_str}`;
+    if (this._topicsStr) output += ` ${this._topicsStr}`;
 
     return output;
   }
@@ -152,7 +152,7 @@ export class Logger implements iLogger {
     const ts = new Date();
 
     if (LOG_LEVELS[this._config?.level ?? "debug"] > LOG_LEVELS[level]) {
-      if (this._config?.force_effect) this._runEffect(ts, level, this.topics, ...args);
+      if (this._config?.forceEffect) this._runEffect(ts, level, this.topics, ...args);
       return;
     }
 

@@ -1,4 +1,4 @@
-import { LOG_LEVELS, type LogLevel, type TEffect, type iEffect } from "../types";
+import { type iEffect, LOG_LEVELS, type LogLevel, type TEffect } from "../types";
 
 export class MonoEffect implements iEffect {
   constructor(

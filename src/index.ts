@@ -1,3 +1,3 @@
 export * from "./effect";
-export { CODES, Logger, default } from "./logger";
+export { CODES, default, Logger } from "./logger";
 export * from "./types";

@@ -1,4 +1,4 @@
-import { beforeEach, expect, Mock, test, vi } from 'vitest';
+import { beforeEach, expect, type Mock, test, vi } from "vitest";
 import { genHash } from "./__mocks__/hash";
 import logger, { Logger } from "./logger";
 
@@ -180,7 +180,7 @@ test("Should run side effect if forced", () => {
 
   const t_logger = logger.topic("test", {
     level: "verbose",
-    force_effect: true,
+    forceEffect: true,
     effect,
   });
 
@@ -202,7 +202,7 @@ test("Should be able to use custom date formatter", () => {
   const hash = genHash();
   const date_format = vi.fn(() => hash);
   const logger = new Logger(undefined, {
-    date_format,
+    dateFormatter: date_format,
   });
 
   logger.debug("test");

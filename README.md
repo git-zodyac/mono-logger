@@ -62,13 +62,12 @@ Configuration can be set for the root logger or specific topic and its descendan
 
 Example:
 ```typescript
-const root_logger = new Logger("root", {
+const rootLogger = new Logger("root", {
     level: "info",
 });
 
-const sub_logger = root_logger.topic("leaf", {});
-
-sub_logger.debug("I am still here!");
+const subLogger = rootLogger.topic("leaf", {});
+subLogger.debug("I am still here!");
 // Output:
 // 7/26/2024, 21:11:09 [DBG] root:leaf I am still here!
 ```
@@ -76,10 +75,10 @@ sub_logger.debug("I am still here!");
 You can configure the logger with:
 - ```level```: (e.g. debug) The minimum log level to be displayed.
 - ```prefix```: (function) A prefix to be added to each log record before topics.
-- ```date_format```: (function) The date formatter function to be used in logs.
+- ```dateFormatter```: (function) The date formatter function to be used in logs.
 - ```effect```: (function) A side-effect function to be called on each log record. It receives log level, list of topics and spread raw data array passed to logger.
 - ```transform```: (function) A function to transform log records before being displayed.
-- ```force_effect```: (boolean) If true, side-effects will be called even if log level is below the minimum level.
+- ```forceEffect```: (boolean) If true, side-effects will be called even if log level is below the minimum level.
 
 
 ```typescript
@@ -88,10 +87,10 @@ import { Logger } from '@zodyac/mono-logger';
 const ex_logger = new Logger('example', {
   level: 'debug',
   prefix: () => 'my-app',
-  date_format: (date) => date.toISOString(),
+  dateFormatter: (date) => date.toISOString(),
   effect: (level, topics, ...data) => console.log(level, topics, ...data),
   transform: (m) => `yes, ${m}`,
-  force_effect: true,
+  forceEffect: true,
 });
 
 ex_logger.log('hello', 'world');
@@ -107,7 +106,7 @@ You can assign any side effect you want to any topic and it's descendants (see C
 - ```topics``` (array, root to leaf)
 - ```...raw``` data you passed to logger
 
-By default, when you log something below the minimum log level specified in Topic Configuration, ```effect``` is not fired. You can force logger to fire it by passing ```force_effect```.
+By default, when you log something below the minimum log level specified in Topic Configuration, ```effect``` is not fired. You can force logger to fire it by passing ```forceEffect```.
 
 ### Inheritance
 By default, every child logger will inherit configuration from it's parent, but if you'd like to customize a specific parameter, you can access parent's configuration as a readonly object:
@@ -117,7 +116,7 @@ const parent = logger.topic("parent", {
   /* ... */
 });
 
-const child = root.topic("child", {
+const child = rootLogger.topic("child", {
   ...parent._config,
   effect: () => { /* do something else */ },
 });
@@ -146,11 +145,11 @@ const handleWarnings = (lvl, topics, ...messages) => {
   console.warn("Warning has been recorded and saved");
 };
 
-const warnings_effect = new MonoEffect(handleWarnings, "warn");
+const warningsEffect = new MonoEffect(handleWarnings, "warn");
 
-const logger = root_logger.topic("target_module_name", {
+const logger = rootLogger.topic("target_module_name", {
   level: "info",
-  effect: warnings_effect,
+  effect: warningsEffect,
 });
 
 logger.warn("Example warning");
@@ -183,16 +182,16 @@ const handleFatal = (lvl, topics, ...messages) => {
   console.error("x_x");
 };
 
-const warnings_effect = new MonoEffect(handleWarnings, "warn");
-const fatal_effect = new MonoEffect(handleFatal, "fatal");
-const poly_effect = new PolyEffect();
+const warningsEffect = new MonoEffect(handleWarnings, "warn");
+const fatalEffect = new MonoEffect(handleFatal, "fatal");
+const polyEffect = new PolyEffect();
 
-poly_effect.add(warnings_effect);
-poly_effect.add(fatal_effect);
+polyEffect.add(warningsEffect);
+polyEffect.add(fatalEffect);
 
-const logger = root_logger.topic("target_module_name", {
+const logger = rootLogger.topic("target_module_name", {
   level: "info",
-  effect: poly_effect,
+  effect: polyEffect,
 });
 
 logger.warn("Example warning");
@@ -209,13 +208,13 @@ logger.fatal("Nope, I'm dead");
 You can use ```PolyEffect``` to execute both parent and current effects. This will allow you to bypass the configuration inheritance limitation:
 
 ```ts
-const poly_effect = new PolyEffect();
-if (parent._config.effect) poly_effect.add(parent._config.effect);
-poly_effect.add(() => { /* New effect */ });
+const polyEffect = new PolyEffect();
+if (parent._config.effect) polyEffect.add(parent._config.effect);
+polyEffect.add(() => { /* New effect */ });
 
 const child = parent.topic("child", {
   ...parent._config,
-  effect: poly_effect,
+  effect: polyEffect,
 });
 ```
 
@@ -227,11 +226,11 @@ The list of known extensions and a guide on how to submit a new one can be found
 Contribution is always welcomed!
 These are several points of special interest:
 
-- Writing tests (`Jest`);
+- Writing tests (`Vitest`);
 - Edge case exploration;
 - Stability and performance improvements (KISS);
 
 You are also welcome to extend and improve plugin ecosystem.
 
 ## License
-MIT
+MIT (c) bebrasmell

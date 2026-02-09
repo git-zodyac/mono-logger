@@ -80,7 +80,7 @@ export interface iLoggerConfig {
    * @returns Formatted date string
    * @example 7/26/2024, 21:05:28
    */
-  readonly date_format?: (date: Date) => string;
+  readonly dateFormatter?: (date: Date) => string;
 
   /**
    * Log level to display
@@ -96,7 +96,7 @@ export interface iLoggerConfig {
    *
    * @default false
    */
-  readonly force_effect?: boolean;
+  readonly forceEffect?: boolean;
 
   /**
    * Custom log implementation. Overrides default console methods.
